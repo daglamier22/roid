@@ -1,0 +1,46 @@
+# automake
+Makefile.in
+
+#autoconf
+aclocal.m4
+autom4te.cache
+build
+config.hpp.in
+configure
+depcomp
+install-sh
+missing
+stamp-h1
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+#Project specific
+game/*
+tmp/*
