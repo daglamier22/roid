@@ -3,6 +3,10 @@
 
 namespace genesis {
 
+class Resource;
+class IResourceFile;
+class ResHandle;
+
 class IResourceLoader
 {
 public:
