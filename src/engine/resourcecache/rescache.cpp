@@ -1,6 +1,3 @@
-//#include <list>
-//#include <vector>
-//#include <cassert>
 #include <algorithm>
 #include <cstring>
 
@@ -93,17 +90,19 @@ ResCache::~ResCache() {
 }//ResCache::~ResCache
 
 bool ResCache::init() {
+	bool retValue = true;
+
 	for( ResourceFiles::iterator fileItr = m_files.begin(); fileItr != m_files.end(); ++fileItr ) {
-		if( (*fileItr)->VOpen() ) {
-			registerLoader(std::shared_ptr<IResourceLoader>(new DefaultResourceLoader()));
-		}
-		else {
+		if( !(*fileItr)->VOpen() ) {
 			GEN_FATAL("unable to load filename: " + (*fileItr)->VGetResourceFileName());
-			return false;
+			retValue = false;
 		}
 	}
 
-	return true;
+	if( retValue )
+		registerLoader(std::shared_ptr<IResourceLoader>(new DefaultResourceLoader()));
+
+	return retValue;
 }//ResCache::init
 
 void ResCache::registerLoader( std::shared_ptr<IResourceLoader> loader ) {
@@ -114,7 +113,7 @@ std::shared_ptr<ResHandle> ResCache::getHandle( Resource* r ) {
 	std::shared_ptr<ResHandle> handle(find(r));
 	if( handle == NULL ) {
 		handle = load(r);
-		assert(handle);
+		GEN_ASSERT(handle);
 	}
 	else {
 		update(handle);
@@ -138,22 +137,28 @@ std::shared_ptr<ResHandle> ResCache::load( Resource* r ) {
 	}
 
 	if( !loader ) {
-		assert(loader && "Default resource loader not found!");
+		GEN_ASSERT(loader && "Default resource loader not found!");
 		return handle;          // Resource not loaded!
 	}
 
 	// determine which resource file it's located in
+	bool found = false;
 	ResourceFiles::iterator fileItr = m_files.begin();
 	while( fileItr != m_files.end() ) {
 		if( (*fileItr)->VGetRawResourceSize(*r) == -1 )
 			++fileItr;
-		else
+		else {
+			found = true;
 			break;
+		}
 	}
-
+	if( !found ) {
+		GEN_LOG("ResCache","file not found: " + r->m_name);
+		return std::shared_ptr<ResHandle>();
+	}
 	int rawSize = (*fileItr)->VGetRawResourceSize(*r);
 	if( rawSize < 0 ) {
-		assert(rawSize > 0 && "Resource size returned -1 - Resource not found");
+		GEN_ASSERT(rawSize > 0 && "Resource size returned -1 - Resource not found");
 		return std::shared_ptr<ResHandle>();
 	}
 
@@ -198,7 +203,7 @@ std::shared_ptr<ResHandle> ResCache::load( Resource* r ) {
 		m_resources[r->m_name] = handle;
 	}
 
-	assert(loader && "Default resource loader not found!");
+	GEN_ASSERT(loader && "Default resource loader not found!");
 
 	return handle;			// ResCache is out of memory!
 }//ResCache::load

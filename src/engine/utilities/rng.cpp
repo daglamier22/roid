@@ -12,7 +12,7 @@ RNG::RNG() : rseed(1), mti(RNG_N+1)
 //returns a number from 0 - n excluding n
 unsigned int RNG::random( unsigned int n ) {
 	unsigned long y;
-	static unsigned long mag01[2]={0x0, RNG_MATRIX_A};
+	static unsigned long mag01[2] = {0x0, RNG_MATRIX_A};
 
 	if( n == 0 )
 		return 0;
@@ -69,6 +69,5 @@ unsigned int RNG::getRandomSeed() {
 void RNG::randomize() {
 	setRandomSeed((unsigned int)time(0));
 }//RNG::randomize
-
 
 }

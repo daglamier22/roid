@@ -26,6 +26,8 @@ void run() {
 	else {
 		std::cout << "error loading" << std::endl;
 	}
+	Resource* res = new Resource("entities.xml");
+	std::shared_ptr<ResHandle> handle = resCache->getHandle(res);
 	GEN_LOG("test","testing a new tag");
 }
 

@@ -3,7 +3,6 @@
 
 #include <list>
 #include <vector>
-#include <cassert>
 #include <memory>
 
 #include "rescache_interfaces.h"
