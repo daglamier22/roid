@@ -5,8 +5,7 @@
 
 genesis::GameApp myapp;
 
-int main()
-{
+int main( int argc, char** argv ) {
 	genesis::run();
 
 	return 0;

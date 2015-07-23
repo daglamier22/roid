@@ -96,10 +96,6 @@ bool ZipFile::init( const std::string& resFileName ) {
 
 	// Assuming no extra comment at the end, read the whole end record.
 	TZipDirHeader dh;
-	int sized = sizeof(dword);
-	int sizew = sizeof(word);
-	int sizeb = sizeof(byte);
-	int sizedh = sizeof(dh);
 	fseek(m_pFile, -(int)sizeof(dh), SEEK_END);
 	long dhOffset = ftell(m_pFile);
 	memset(&dh, 0, sizeof(dh));

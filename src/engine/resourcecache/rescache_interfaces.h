@@ -1,6 +1,9 @@
 #ifndef RESCACHE_INTERFACES_H
 #define RESCACHE_INTERFACES_H
 
+#include <string>
+#include <memory>
+
 namespace genesis {
 
 class Resource;
@@ -15,7 +18,7 @@ public:
 	virtual bool VDiscardRawBufferAfterLoad() = 0;
 	virtual bool VAddNullZero() { return false; }
 	virtual unsigned int VGetLoadedResourceSize( char* rawBuffer, unsigned int rawSize ) = 0;
-	virtual bool VLoadResource( char* rawBuffer, unsigned int rawSize, shared_ptr<ResHandle> handle ) = 0;
+	virtual bool VLoadResource( char* rawBuffer, unsigned int rawSize, std::shared_ptr<ResHandle> handle ) = 0;
 };
 
 class IResourceFile
@@ -25,9 +28,16 @@ public:
 	virtual int VGetRawResourceSize( const Resource& r ) = 0;
 	virtual int VGetRawResource( const Resource& r, char* buffer ) = 0;
 	virtual int VGetNumResources() const = 0;
+	virtual std::string VGetResourceFileName() const = 0;
 	virtual std::string VGetResourceName( int num ) const = 0;
 	virtual bool VIsUsingDevelopmentDirectories() const = 0;
 	virtual ~IResourceFile() { }
+};
+
+class IResourceExtraData
+{
+public:
+	virtual std::string VToString() = 0;
 };
 
 }

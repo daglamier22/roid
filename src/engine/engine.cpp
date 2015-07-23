@@ -3,7 +3,7 @@
 #include "engine.h"
 #include "utilities/logger.h"
 #include "utilities/rng.h"
-#include "resourcecache/zipfile.h"
+#include "resourcecache/rescache.h"
 
 namespace genesis {
 
@@ -12,19 +12,21 @@ Engine::Engine()
 }
 
 void run() {
-	ZipFile* zip;
-	zip = new ZipFile();
-	char* buf;
-	if( !zip->init("/mnt/Storage/Projects/roid/game/data.zip") ) {
-		std::cout << "error loading zip file" << std::endl;
+	ResourceFiles files;
+	std::string resourcefilenames[3] = {"system.zip", "levels.zip", "objects.zip"};
+	for( int i = 0; i < 3; i++ ) {
+		IResourceFile* zip = new ResourceZipFile(resourcefilenames[i]);
+		files.push_back(zip);
+	}
+
+	ResCache* resCache = new ResCache(50, files);
+	if( resCache->init() ) {
+		std::cout << "successfully loaded" << std::endl;
 	}
 	else {
-		std::cout << "zip loaded successfully" << std::endl;
-		std::cout << zip->find("docs/logging.xml") << std::endl;
-		std::cout << zip->getFilename(1) << " " << zip->getFileLength(1) << std::endl;
-		buf = new char[zip->getFileLength(0)];
-		zip->readFile(0,buf);
+		std::cout << "error loading" << std::endl;
 	}
+	GEN_LOG("test","testing a new tag");
 }
 
 }

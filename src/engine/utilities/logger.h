@@ -4,11 +4,14 @@
 #include <string>
 #include <map>
 #include <list>
+#include <tbb/mutex.h>
+#include <Xm/Xm.h>
+#include <Xm/MessageB.h>
 
 namespace genesis {
 
-// the log filename
-static const char* ERRORLOG_FILENAME = "error.log";
+// the logger options filename
+#define LOGGINGXML_FILENAME "logging.xml"
 
 // display flags
 const unsigned char LOGFLAG_WRITE_TO_LOG_FILE =		1 << 0;
@@ -51,13 +54,11 @@ protected:
 	typedef std::map<std::string, unsigned char> Tags;
 	typedef std::list<ErrorMessenger*> ErrorMessengerList;
 
-	Tags m_tags;
-	ErrorMessengerList m_errorMessengers;
+	Tags				m_tags;
+	tbb::mutex			m_tagsMutex;
 
-	// TODO look into utilizing thread safety
-	// thread safety
-	//CriticalSection m_tagCriticalSection;
-	//CriticalSection m_messengerCriticalSection;
+	ErrorMessengerList	m_errorMessengers;
+	tbb::mutex			m_errorMessengersMutex;
 
 public:
 	// construction
@@ -81,7 +82,10 @@ private:
 	// log helpers
 	void outputFinalBufferToLogs( const std::string& finalBuffer, unsigned char flags );
 	void writeToLogFile( const std::string& data );
+	void initLogFile();
 	void getOutputBuffer( std::string& outOutputBuffer, const std::string& tag, const std::string& message, const char* funcName, const char* sourceFile, unsigned int lineNum );
+
+	static void errorResponse( Widget widget, XtPointer client_data, XtPointer call_data );
 };
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -117,6 +121,7 @@ private:
 #define GEN_WARNING(str) \
 		do \
 		{ \
+				Logger::init(LOGGINGXML_FILENAME);\
 				std::string s((str)); \
 				Logger::log("WARNING", s, __FUNCTION__, __FILE__, __LINE__); \
 		}\
@@ -128,6 +133,7 @@ private:
 #define GEN_INFO(str) \
 		do \
 		{ \
+				Logger::init(LOGGINGXML_FILENAME);\
 				std::string s((str)); \
 				Logger::log("INFO", s, NULL, NULL, 0); \
 		} \
@@ -138,6 +144,7 @@ private:
 #define GEN_LOG(tag, str) \
 		do \
 		{ \
+				Logger::init(LOGGINGXML_FILENAME);\
 				std::string s((str)); \
 				Logger::log(tag, s, NULL, NULL, 0); \
 		} \

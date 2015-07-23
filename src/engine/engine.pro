@@ -4,8 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       -= core gui
-
+QT -= core gui
 CONFIG(debug, debug|release) {
 TARGET = engined
 DESTDIR = ../../../lib
@@ -27,7 +26,9 @@ SOURCES += engine.cpp \
     utilities/tinyxml.cpp \
     utilities/tinyxmlerror.cpp \
     utilities/tinyxmlparser.cpp \
-	resourcecache/zipfile.cpp
+	resourcecache/zipfile.cpp \
+    resourcecache/rescache.cpp \
+    utilities/string.cpp
 
 HEADERS += engine.h \
     utilities/rng.h \
@@ -36,7 +37,9 @@ HEADERS += engine.h \
     utilities/tinystr.h \
     utilities/tinyxml.h \
 	resourcecache/zipfile.h \
-    resourcecache/rescache_interfaces.h
+    resourcecache/rescache_interfaces.h \
+    resourcecache/rescache.h \
+    utilities/string.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

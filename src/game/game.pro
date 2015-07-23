@@ -29,7 +29,7 @@ unix:!macx: PRE_TARGETDEPS += $$PWD/../../lib/libengine.a
 DESTDIR = ../../../game
 }
 
-LIBS += -lz
+LIBS += -lz -ltbb -lXm -lXt
 
 DISTFILES += \
-    ../../game/logging.xml
+	../../game/logging.xml
