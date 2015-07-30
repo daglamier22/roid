@@ -130,7 +130,7 @@ std::shared_ptr<ResHandle> ResCache::load( Resource* r ) {
 	for( ResourceLoaders::iterator it = m_resourceLoaders.begin(); it != m_resourceLoaders.end(); ++it ) {
 		std::shared_ptr<IResourceLoader> testLoader = *it;
 
-		if( wildcardMatch(testLoader->VGetPattern().c_str(), r->m_name.c_str()) ) {
+		if( WildcardMatch(testLoader->VGetPattern().c_str(), r->m_name.c_str()) ) {
 			loader = testLoader;
 			break;
 		}
@@ -286,7 +286,7 @@ std::vector<std::string> ResCache::match( const std::string pattern ) {
 		for( int i = 0; i < numFiles; ++i ) {
 			std::string name = (*fileItr)->VGetResourceName(i);
 			std::transform(name.begin(), name.end(), name.begin(), (int(*)(int)) std::tolower);
-			if( wildcardMatch(pattern.c_str(), name.c_str()) ) {
+			if( WildcardMatch(pattern.c_str(), name.c_str()) ) {
 				matchingNames.push_back(name);
 			}
 		}
@@ -306,7 +306,7 @@ int ResCache::preload( const std::string pattern, void (*progressCallback)(int, 
 		for( int i = 0; i < numFiles; ++i ) {
 			Resource resource((*fileItr)->VGetResourceName(i));
 
-			if( wildcardMatch(pattern.c_str(), resource.m_name.c_str()) ) {
+			if( WildcardMatch(pattern.c_str(), resource.m_name.c_str()) ) {
 				std::shared_ptr<ResHandle> handle = getHandle(&resource);
 				++loaded;
 			}

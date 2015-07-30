@@ -28,7 +28,12 @@ SOURCES += engine.cpp \
     utilities/tinyxmlparser.cpp \
 	resourcecache/zipfile.cpp \
     resourcecache/rescache.cpp \
-    utilities/string.cpp
+    utilities/string.cpp \
+    events/Event.cpp \
+    events/EventManager.cpp \
+    events/EventManagerImp.cpp \
+    process/process.cpp \
+    process/processmanager.cpp
 
 HEADERS += engine.h \
     utilities/rng.h \
@@ -39,7 +44,13 @@ HEADERS += engine.h \
 	resourcecache/zipfile.h \
     resourcecache/rescache_interfaces.h \
     resourcecache/rescache.h \
-    utilities/string.h
+    utilities/string.h \
+    events/Event.h \
+    events/EventManager.h \
+    events/FastDelegate.h \
+    events/EventManagerImp.h \
+    process/process.h \
+    process/processmanager.h
 unix {
     target.path = /usr/lib
     INSTALLS += target
